@@ -395,6 +395,35 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    // Lazy load videos when they come into view
+    const options = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+    
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const video = entry.target;
+                const source = video.querySelector('source');
+                
+                // If we have a data-src, use it
+                if (source && source.dataset.src) {
+                    source.src = source.dataset.src;
+                    video.load();
+                    // Once loaded, remove from observation
+                    observer.unobserve(video);
+                }
+            }
+        });
+    }, options);
+    
+    // Observe all videos with sources that have data-src
+    document.querySelectorAll('video source[data-src]').forEach(source => {
+        observer.observe(source.parentElement);
+    });
 });
 
 // Three.js background animation
