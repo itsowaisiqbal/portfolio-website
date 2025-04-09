@@ -194,17 +194,37 @@ main {
 
 /* Profile image - ensure no shimmer effects */
 .intro-image {
-    position: relative;
-    z-index: 2;
+    flex: 0 0 400px;
+    height: 400px;
+    width: 400px;
+    min-width: 380px;
+    border-radius: 50%;
+    overflow: hidden;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 
                 0 0 0 10px rgba(0, 238, 255, 0.3);
-    transition: box-shadow 0.3s ease-in-out;
-    overflow: hidden; /* Keep this to prevent artifacts */
+    transition: all 0.4s ease-in-out;
+    margin-right: 30px;
+    border: 6px solid var(--accent);
+    position: relative;
+    z-index: 5;
+    aspect-ratio: 1/1;
 }
 
 .intro-image:hover {
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 
-                0 0 0 10px rgba(0, 238, 255, 0.5);
+    transform: scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
+                0 0 0 12px rgba(0, 238, 255, 0.5);
+}
+
+.intro-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.intro-image:hover img {
+    transform: scale(1.05);
 }
 
 /* Make sure ALL shimmer effects are properly disabled */
@@ -605,6 +625,15 @@ footer {
         padding: 0 20px;
         gap: 20px;
     }
+    
+    .intro-image {
+        margin-right: 0;
+        flex: 0 0 350px;
+        height: 350px;
+        width: 350px;
+        min-width: 350px;
+        aspect-ratio: 1/1;
+    }
 }
 
 @media (max-width: 768px) {
@@ -644,6 +673,14 @@ footer {
     #contact {
         padding: 80px 15px 60px;
     }
+    
+    .intro-image {
+        flex: 0 0 280px;
+        height: 280px;
+        width: 280px;
+        min-width: 280px;
+        aspect-ratio: 1/1;
+    }
 }
 
 @media (max-width: 480px) {
@@ -680,6 +717,15 @@ footer {
     
     .section-title {
         margin-bottom: 30px;
+    }
+    
+    .intro-image {
+        flex: 0 0 240px;
+        height: 240px;
+        width: 240px;
+        min-width: 240px;
+        border-width: 4px;
+        aspect-ratio: 1/1;
     }
 }
 
@@ -767,6 +813,7 @@ footer {
 .intro-image {
     flex: 0 0 400px;
     height: 400px;
+    width: 400px;
     min-width: 380px;
     border-radius: 50%;
     overflow: hidden;
@@ -777,6 +824,7 @@ footer {
     border: 6px solid var(--accent);
     position: relative;
     z-index: 5;
+    aspect-ratio: 1/1;
 }
 
 .intro-image:hover {
@@ -996,7 +1044,9 @@ footer {
         margin-right: 0;
         flex: 0 0 350px;
         height: 350px;
+        width: 350px;
         min-width: 350px;
+        aspect-ratio: 1/1;
     }
     
     .intro-text {
@@ -1043,7 +1093,9 @@ footer {
     .intro-image {
         flex: 0 0 280px;
         height: 280px;
+        width: 280px;
         min-width: 280px;
+        aspect-ratio: 1/1;
     }
     
     .video-grid {
@@ -1080,8 +1132,10 @@ footer {
     .intro-image {
         flex: 0 0 240px;
         height: 240px;
+        width: 240px;
         min-width: 240px;
         border-width: 4px;
+        aspect-ratio: 1/1;
     }
     
     .intro-bio p {
