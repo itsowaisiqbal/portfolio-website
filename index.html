@@ -4,127 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0A0A0A">
-    <title>Owais Iqbal | Creative XR Developer</title>
+    <title>@itsowaisiqbal</title>
+    <link rel="icon" href="https://cdn.iconscout.com/icon/free/png-256/free-code-280-460136.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Preload critical scripts -->
+    <link rel="preload" href="script.js?v=1.2" as="script">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.158.0/three.min.js" as="script">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.3/gsap.min.js" as="script">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.158.0/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.3/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.3/ScrollTrigger.min.js"></script>
     
-    <!-- Video display fix -->
-    <style>
-        /* Video display fixes - added to resolve visibility issues */
-        .video-item {
-            display: block !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-            width: 100% !important;
-            margin: 0 auto !important;
-            min-height: 300px !important;
-            border-left: none !important;
-            border-right: none !important;
-            border-top: none !important;
-            border-bottom: none !important;
-        }
-        
-        .video-container {
-            position: relative !important;
-            display: block !important;
-            width: 100% !important;
-            height: auto !important;
-            min-height: 300px !important;
-            overflow: visible !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-            border-left: none !important;
-            border-right: none !important;
-            border-top: none !important;
-            border-bottom: none !important;
-        }
-        
-        .video-container video {
-            display: block !important;
-            width: 100% !important;
-            height: auto !important;
-            min-height: 300px !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-            z-index: 100 !important;
-            position: relative !important;
-            object-fit: contain !important;
-            background: rgba(0,0,0,0.1) !important;
-            border-left: none !important;
-            border-right: none !important;
-            border-top: none !important;
-            border-bottom: none !important;
-        }
-        
-        .video-container.portrait {
-            max-width: 400px !important;
-            margin: 0 auto !important;
-            border-left: none !important;
-            border-right: none !important;
-            border-top: none !important;
-            border-bottom: none !important;
-        }
-        
-        /* Remove any spinners/overlays */
-        .video-container::before,
-        .video-container::after,
-        .video-item::before,
-        .video-item::after {
-            display: none !important;
-        }
-        
-        /* Fix video grid */
-        .video-grid {
-            display: grid !important;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
-            gap: 30px !important;
-            width: 100% !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-        }
-        
-        /* Fix for tag styling consistency */
-        .video-info .tags span {
-            display: inline-block !important;
-            background-color: rgba(0, 166, 255, 0.1) !important;
-            color: #00A6FF !important;
-            border: 1px solid #00A6FF !important;
-            border-radius: 50px !important;
-            padding: 3px 10px !important;
-            margin-right: 6px !important;
-            margin-bottom: 6px !important;
-            font-size: 12px !important;
-            font-weight: 500 !important;
-        }
-        
-        /* Remove the unwanted blue line while preserving hover effects */
-        .platform-panel, 
-        .video-grid, 
-        .video-item, 
-        .video-container, 
-        .video-container video,
-        .video-info {
-            border-left: none !important;
-            border-right: none !important;
-            border-top: none !important;
-            border-bottom: none !important;
-        }
-        
-        /* Preserve the blue glow hover effect */
-        .video-item:hover {
-            box-shadow: 0 0 15px rgba(0, 166, 255, 0.5) !important;
-            transition: box-shadow 0.3s ease !important;
-        }
-        
-        /* Fix media controls */
-        video::-webkit-media-controls {
-            border: none !important;
-        }
-    </style>
-    
-    <script src="script.js?v=1.1" defer></script>
+    <script src="script.js?v=1.2" defer></script>
 </head>
 <body>
 

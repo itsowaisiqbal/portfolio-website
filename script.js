@@ -116,378 +116,47 @@ document.addEventListener('DOMContentLoaded', function() {
         delay: 1.1
     });
     
-    // Update GSAP animation for intro image
-    gsap.from('.intro-image', {
-        scale: 0.8,
-        opacity: 0,
-        duration: 1.5,
-        ease: 'elastic.out(1, 0.8)',
-        delay: 0.2 // Slight delay for better sequencing
-    });
-    
     // Add "typing" effect to the gallery heading
-    const titleElement = document.querySelector('.gallery-heading h1');
-    if (titleElement && sessionStorage.getItem('visited') !== 'true') {
-        const originalTitle = titleElement.innerHTML;
-        titleElement.innerHTML = '';
-        let i = 0;
-        
-        function typeWriter() {
-            if (i < originalTitle.length) {
-                titleElement.innerHTML += originalTitle.charAt(i);
-                i++;
-                setTimeout(typeWriter, 80);
-            }
-        }
-        
-        typeWriter();
-        sessionStorage.setItem('visited', 'true');
-    }
-    
-    // Video item animation on scroll
-    const videoItems = document.querySelectorAll('.video-item');
-    
-    // Function to check if element is in viewport
-    function isInViewport(element) {
-        const rect = element.getBoundingClientRect();
-        return (
-            rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.85 &&
-            rect.bottom >= 0
-        );
-    }
-    
-    // Function to handle scroll and show videos when they enter viewport
-    function handleScroll() {
-        videoItems.forEach(item => {
-            if (isInViewport(item)) {
-                item.classList.add('visible');
-                
-                // Play videos when they become visible
-                const video = item.querySelector('video');
-                if (video && video.paused) {
-                    // Play the video if it's visible
-                    video.play().catch(e => {
-                        console.log('Autoplay prevented:', e);
-                    });
-                }
-            } else {
-                // Optional: pause videos when they go out of view to save resources
-                const video = item.querySelector('video');
-                if (video && !video.paused) {
-                    video.pause();
-                }
-            }
-        });
-    }
-    
-    // Initial check on page load
-    setTimeout(() => {
-        handleScroll();
-    }, 100);
-    
-    // Check on scroll
-    window.addEventListener('scroll', handleScroll);
-    
-    // Set autoplay for all videos
-    function setupVideoAutoplay() {
-        const videos = document.querySelectorAll('video');
-        console.log(`Setting up autoplay for ${videos.length} videos`);
-        
-        videos.forEach((video, index) => {
-            // Set attributes for autoplay
-            video.autoplay = true;
-            video.muted = true; // Must be muted for autoplay to work in most browsers
-            video.setAttribute('playsinline', ''); // For iOS
-            video.setAttribute('loop', ''); // Ensure videos loop
-            
-            console.log(`Initializing video ${index + 1}/${videos.length}`);
-            
-            // Load the video
-            video.load();
-            
-            // Try to play when it's loaded
-            video.addEventListener('loadedmetadata', function() {
-                console.log(`Video ${index + 1} metadata loaded, attempting to play`);
-                video.play().catch(e => {
-                    console.log(`Autoplay prevented for video ${index + 1}:`, e);
-                });
-            });
-            
-            // Add error handler
-            video.addEventListener('error', function(e) {
-                console.error(`Error with video ${index + 1}:`, e);
-            });
-        });
-    }
-    
-    // Call function to setup video autoplay
-    setupVideoAutoplay();
-    
-    // Fix for the updated platform tabs ("other" instead of "web-ar", "vr", and "ai")
     const platformTabs = document.querySelectorAll('.platform-tab');
     const platformPanels = document.querySelectorAll('.platform-panel');
     
-    // Set up click handlers for platform tabs
+    // Set up tab click handlers
     platformTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            // Remove active class from all tabs
-            platformTabs.forEach(t => t.classList.remove('active'));
+        // Remove any existing click listeners first to avoid duplicates
+        const newTab = tab.cloneNode(true);
+        tab.parentNode.replaceChild(newTab, tab);
+        
+        newTab.addEventListener('click', function() {
+            const platform = this.getAttribute('data-platform');
             
-            // Add active class to clicked tab
-            tab.classList.add('active');
+            // Update active tab
+            document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
             
-            // Hide all panels
-            platformPanels.forEach(panel => panel.classList.remove('active'));
-            
-            // Show the panel corresponding to clicked tab
-            const platform = tab.getAttribute('data-platform');
-            const targetPanelId = platform + '-panel';
-            const targetPanel = document.getElementById(targetPanelId);
-            
-            if (targetPanel) {
+            // Show corresponding panel
+            document.querySelectorAll('.platform-panel').forEach(p => p.classList.remove('active'));
+            const targetPanel = document.getElementById(`${platform}-panel`);
+            if (targetPanel) { // Check if targetPanel exists
                 targetPanel.classList.add('active');
                 
-                // Play videos in the newly active panel
-                const panelVideos = targetPanel.querySelectorAll('video');
-                panelVideos.forEach(video => {
-                    // Try to play the video
-                    video.play().catch(e => {
-                        console.log('Tab switch autoplay prevented:', e);
-                    });
-                });
-                
-                // Optionally pause videos in inactive panels to save resources
-                platformPanels.forEach(panel => {
-                    if (panel.id !== targetPanelId) {
-                        const inactiveVideos = panel.querySelectorAll('video');
-                        inactiveVideos.forEach(video => {
-                            video.pause();
-                        });
+                // Pause all videos in other (inactive) tabs to save resources
+                document.querySelectorAll('video').forEach(video => {
+                    if (!targetPanel.contains(video)) {
+                        video.pause();
+                    } else {
+                        // Attempt to play visible videos in the now active tab
+                        const playPromise = video.play();
+                        if (playPromise !== undefined) {
+                            playPromise.catch(e => {
+                                // Autoplay likely prevented, observer will handle interaction play
+                                // console.log('Tab switch play prevented:', e);
+                            });
+                        }
                     }
                 });
             }
         });
     });
-    
-    // Remove any play buttons that might have been added for mobile
-    const playButtons = document.querySelectorAll('.video-play-button');
-    playButtons.forEach(button => {
-        button.style.display = 'none';
-    });
-    
-    // Make the video grid more visually interesting by staggering the entrance animations
-    videoItems.forEach((item, index) => {
-        item.style.transitionDelay = `${index * 0.1}s`;
-    });
-    
-    // Intersection Observer for fade-in animations
-    const fadeElements = document.querySelectorAll('.contact-content, .gallery-heading');
-    
-    const fadeOptions = {
-        root: null,
-        threshold: 0.2,
-        rootMargin: '0px'
-    };
-    
-    const fadeObserver = new IntersectionObserver(function(entries, observer) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in-visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, fadeOptions);
-    
-    fadeElements.forEach(el => {
-        el.classList.add('fade-in');
-        fadeObserver.observe(el);
-    });
-    
-    // Feature detection for video playback on mobile
-    function checkAutoplaySupport() {
-        const video = document.createElement('video');
-        video.autoplay = true;
-        video.muted = true;
-        video.playsInline = true;
-        video.src = 'data:video/mp4;base64,AAAAIGZ0eXBtcDQyAAAAAG1wNDJtcDQxaXNvbWF2YzEAAATKbW9vdgAAAGxtdmhkAAAAANLEP5XSxD+VAAB3MAAAdcQAAQAAAQAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAACFpb2RzAAAAABCAgIAQAE////9//w6AgIAEAAAAAQAABDV0cmFrAAAAXHRraGQAAAAH0sQ/ldLEP5UAAAABAAAAAAAAdcQAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAAoAAAAFoAAAAAAAkZWR0cwAAABxlbHN0AAAAAAAAAAEAAHXEAAACAAABAAAAAAG+bWRpYQAAACBtZGhkAAAAANLEP5XSxD+VAAB3MAAAdcQAAAAAMWhkbHIAAAAAAAAAAHZpZGUAAAAAAAAAAAAAAABMLVNNQVNIIFZpZGVvIEhhbmRsZXIAAAABT21pbmYAAAAUdm1oZAAAAAEAAAAAAAAAAAAAACRkaW5mAAAAHGRyZWYAAAAAAAAAAQAAAAx1cmwgAAAAAQAAAQ9zdGJsAAAAr3N0c2QAAAAAAAAAAQAAAJthdmMxAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAoABaABIAAAASAAAAAAAAAABCkFWQyBDb2RpbmcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//AAAAOGF2Y0MBZAAf/+EAHGdkAB+s2UCgL/lwFqCgoKgAAB9IAAdTAHjBjLABAAVo6+yyLP34+AAAAAATY29scm5jbHgABQAFAAUAAAAAEHBhc3AAAAABAAAAAQAAABhzdHRzAAAAAAAAAAEAAAAeAAAD6QAAAQBjdHRzAAAAAAAAAB4AAAABAAACWQAAAAEANQ8AAAAAAAAWAAAAAAEAAALAAAAAAAI5gAAAAAAA1gAAAAABAAAFGQAAAAAVc3RzYwAAAAAAAAABAAAAAQAAABxzdHN6AAAAAAAAAAAAAAAeAAADCQAAAAsAAAALAAAACgAAAAoAAAAKAAAACgAAAAoAAAAKAAAACgAAAAoAAAAKAAAACgAAAAoAAAAKAAAACgAAAAoAAAAKAAAACgAAAAoAAAAKAAAACgAAAAoAAAAKAAAACgAAAAoAAAAKAAAACgAAAAAVc3RjbwAAAAAAAAABAAAAMAAAAGJ1ZHRhAAAAWm1ldGEAAAAAAAAAIWhkbHIAAAAAAAAAAG1kaXJhcHBsAAAAAAAAAAAAAAAALmlsc3QAAAAiAl8AAAAUbWVhbgAAAABjb20uYXBwbGUuaVR1bmVzAAAAF21pbmYAAAAPbmhudAAAAB9paW5mAAAAG2ltZnIAAAAUdHJlZgAAABRkYXRhAAAAAQAAAA';
-        
-        return video.play().then(() => {
-            return true;
-        }).catch(() => {
-            return false;
-        });
-    }
-    
-    // For mobile devices, manage videos with play buttons
-    if ('ontouchstart' in window) {
-        // For mobile devices, add play buttons to videos
-        const videos = document.querySelectorAll('video');
-        videos.forEach(video => {
-            // First frame is already loaded by loadVideoFirstFrames function
-            
-            // Create play button
-            const playButton = document.createElement('button');
-            playButton.className = 'video-play-button';
-            playButton.innerHTML = '▶';
-            
-            // Add play button to video container
-            const container = video.parentElement;
-            container.appendChild(playButton);
-            
-            // Add click event to play/pause
-            container.addEventListener('click', () => {
-                if (video.paused) {
-                    video.play();
-                    playButton.style.display = 'none';
-                } else {
-                    video.pause();
-                    playButton.style.display = 'block';
-                }
-            });
-        });
-    }
-    
-    // Simplified wave emoji animation (removed shimmer effect)
-    const waveEmoji = document.querySelector('.wave-emoji');
-    if (waveEmoji) {
-        // Initial animation
-        waveEmoji.classList.add('waving');
-        
-        // Periodic wave animation
-        setInterval(() => {
-            waveEmoji.classList.add('waving');
-            
-            setTimeout(() => {
-                waveEmoji.classList.remove('waving');
-            }, 1000);
-        }, 3000);
-    }
-    
-    // Dynamic positioning for scroll arrow
-    const scrollArrow = document.querySelector('.scroll-arrow');
-    const introContent = document.querySelector('.intro-content');
-    const introSection = document.querySelector('.intro-section');
-    
-    function positionScrollArrow() {
-        if (scrollArrow && introSection) {
-            // Ensure the arrow is visible and at the proper position
-            scrollArrow.style.opacity = "1";
-            scrollArrow.style.visibility = "visible";
-            
-            // Make sure it's at the bottom of the intro section
-            scrollArrow.style.bottom = "20px";
-        }
-    }
-    
-    // Position on load and window resize
-    positionScrollArrow();
-    window.addEventListener('resize', positionScrollArrow);
-    
-    // Show arrow after intro animations are complete
-    setTimeout(() => {
-        if (scrollArrow) {
-            scrollArrow.style.opacity = "1";
-            scrollArrow.style.visibility = "visible";
-            scrollArrow.style.bottom = "20px";
-        }
-    }, 1500);
-    
-    // Scroll arrow functionality
-    if (scrollArrow) {
-        scrollArrow.addEventListener('click', () => {
-            const workSection = document.getElementById('work');
-            if (workSection) {
-                window.scrollTo({
-                    top: workSection.offsetTop,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    }
-    
-    // Improved lazy loading for videos
-    const lazyVideos = document.querySelectorAll('video[data-src]');
-    
-    if ('IntersectionObserver' in window) {
-        const videoObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const video = entry.target;
-                    const src = video.getAttribute('data-src');
-                    
-                    if (src) {
-                        video.src = src;
-                        video.load();
-                        video.removeAttribute('data-src');
-                        
-                        // Set video to loop and muted
-                        video.loop = true;
-                        video.muted = true;
-                        video.setAttribute('playsinline', '');
-                        
-                        // Try to autoplay
-                        video.play().catch(e => {
-                            console.log('Lazy load autoplay prevented:', e);
-                        });
-                    }
-                    
-                    // Stop observing after loading
-                    videoObserver.unobserve(video);
-                }
-            });
-        }, {
-            rootMargin: '100px 0px',
-            threshold: 0.1
-        });
-        
-        // Observe all videos with data-src
-        lazyVideos.forEach(video => {
-            videoObserver.observe(video);
-        });
-    } else {
-        // Fallback for browsers without IntersectionObserver
-        lazyVideos.forEach(video => {
-            const src = video.getAttribute('data-src');
-            if (src) {
-                video.src = src;
-                video.load();
-                video.removeAttribute('data-src');
-            }
-        });
-    }
-    
-    // Optimize for mobile - better touch handling
-    if (isMobileDevice) {
-        // Add touch-specific handling
-        const videoItems = document.querySelectorAll('.video-item');
-        videoItems.forEach(item => {
-            item.addEventListener('touchstart', function() {
-                // This empty handler enables CSS :active states on iOS
-            }, {passive: true});
-        });
-        
-        // Prevent page zooming on double tap for iOS Safari
-        document.addEventListener('touchend', function(event) {
-            const now = Date.now();
-            const DOUBLE_TAP_THRESHOLD = 300;
-            if (now - lastTouchEnd <= DOUBLE_TAP_THRESHOLD) {
-                event.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, {passive: false});
-        
-        // Set a variable to track the last touch end time
-        let lastTouchEnd = 0;
-    }
-    
-    // Optimize performance by reducing animations on mobile
-    if (isMobileDevice) {
-        // Simplify GSAP animations for better performance
-        gsap.defaults({
-            duration: 0.7,
-            ease: 'power2.out'
-        });
-    }
     
     // Load portfolio data from JSON file
     fetch('data.json')
@@ -496,11 +165,32 @@ document.addEventListener('DOMContentLoaded', function() {
             // Populate profile information
             populateProfile(data.profile);
             
+            // *** ADD GSAP Animation for intro image HERE ***
+            // Ensures image src is set before animation starts
+            gsap.from('.intro-image', {
+                scale: 0.9, // Keep the scale animation
+                autoAlpha: 0, // MODIFIED: Use autoAlpha instead of opacity
+                duration: 1.0, 
+                ease: 'power3.out',
+                delay: 0.4 // Keep increased delay
+            });
+            
             // Populate project sections
             populateProjects(data.sections);
             
             // Populate contact information
             populateContact(data.contact);
+            
+            // Initialize the video lazy loading/playback observer
+            initVideoObserver(); 
+            
+            // Initialize the video item visibility observer AFTER content is populated
+            initVideoItemObserver();
+            
+            // Apply staggered delay AFTER items are added to the DOM
+            document.querySelectorAll('.video-item').forEach((item, index) => {
+                item.style.transitionDelay = `${index * 0.05}s`; // Slightly faster stagger
+            });
         })
         .catch(error => {
             console.error('Error loading portfolio data:', error);
@@ -532,22 +222,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to populate project sections
     function populateProjects(sections) {
-        // Set up tab click handlers if not already done in existing code
-        const tabs = document.querySelectorAll('.platform-tab');
-        tabs.forEach(tab => {
-            tab.addEventListener('click', function() {
-                const platform = this.getAttribute('data-platform');
-                
-                // Update active tab
-                document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Show corresponding panel
-                document.querySelectorAll('.platform-panel').forEach(p => p.classList.remove('active'));
-                document.getElementById(`${platform}-panel`).classList.add('active');
-            });
-        });
-        
         // Populate Lens Studio section
         populateSection('snapchat', sections.lens_studio);
         
@@ -585,13 +259,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Log the video URL to help with debugging
-            console.log(`Creating video element for: ${item.video_url}`);
+            // console.log(`Creating video element for: ${item.video_url}`);
             
+            // MODIFIED: Add the 'ar' class (or potentially others) dynamically if needed
+            // For now, keeping 'ar' as default, adjust if different video types need different classes
             const videoItemHtml = `
                 <div class="video-item ar">
                     <div class="video-container portrait">
-                        <video autoplay muted loop playsinline loading="lazy">
-                            <source src="${item.video_url}" type="video/mp4">
+                        <div class="video-loading-spinner" style="display: none;"></div>
+                        <video muted loop playsinline
+                               data-src="${item.video_url}"
+                               poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E">
                             Your browser does not support the video tag.
                         </video>
                     </div>
@@ -606,11 +284,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             videoGrid.innerHTML += videoItemHtml;
         });
-        
-        // Initialize videos directly with a slight delay to ensure DOM is updated
-        setTimeout(() => {
-            setupVideoAutoplay();
-        }, 100);
     }
     
     // Function to populate contact information
@@ -641,79 +314,240 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Function to initialize lazy loading for videos
-    function initLazyLoading() {
-        // Get all video elements with data-src attribute
-        const lazyVideos = document.querySelectorAll('video source[data-src]');
-        console.log(`Found ${lazyVideos.length} lazy videos to load`);
-        
-        if ('IntersectionObserver' in window) {
-            const videoObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const source = entry.target;
-                        const src = source.getAttribute('data-src');
-                        
-                        if (src) {
-                            console.log(`Attempting to load video: ${src}`);
-                            source.src = src;
-                            source.removeAttribute('data-src');
-                            
-                            // Get the parent video element
-                            const video = source.parentElement;
-                            
-                            // Add error handling for loading failures
-                            video.addEventListener('error', function(e) {
-                                console.error(`Error loading video from ${src}:`, e);
-                            }, true); // Capture the event
-                            
-                            // Load the video
-                            video.load();
-                            
-                            // Set video to loop and muted
-                            video.loop = true;
-                            video.muted = true;
-                            video.setAttribute('playsinline', '');
-                            
-                            // Try to autoplay
-                            video.play().catch(e => {
-                                console.log('Lazy load autoplay prevented:', e);
-                            });
-                        }
-                        
-                        // Stop observing after loading
-                        videoObserver.unobserve(source);
+    // Centralized video observer function for loading/playback
+    function initVideoObserver() {
+        if (!('IntersectionObserver' in window)) {
+            console.log("IntersectionObserver not supported. Videos might not lazy load or autoplay correctly.");
+            // Basic fallback: Load all videos immediately (less performant)
+             document.querySelectorAll('video[data-src]').forEach(video => {
+                 loadAndPlayVideo(video);
+             });
+            return;
+        }
+
+        const options = {
+            root: null, // relative to document viewport
+            rootMargin: '150px', // Load videos slightly before they enter viewport
+            threshold: 0.01 // Trigger even if only 1% is visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                const video = entry.target;
+                const container = video.closest('.video-container'); // Find the container
+                const spinner = container ? container.querySelector('.video-loading-spinner') : null;
+
+                if (entry.isIntersecting) {
+                    // Video is coming into view or is in view
+                    const dataSrc = video.getAttribute('data-src');
+
+                    if (dataSrc) {
+                        // Video hasn't been loaded yet
+                        if (spinner) spinner.style.display = 'block';
+
+                        // Add listeners before setting src
+                        video.addEventListener('loadeddata', function handleLoaded() {
+                             if (spinner) spinner.style.display = 'none';
+                             // Attempt to play only if still intersecting when loaded
+                             if (entry.isIntersecting) {
+                                 const playPromise = video.play();
+                                 if (playPromise !== undefined) {
+                                     playPromise.catch(e => {
+                                         console.log('Autoplay prevented on load:', video.getAttribute('data-src'), e);
+                                         // Consider showing a play button here if needed
+                                     });
+                                 }
+                             } else {
+                                 video.pause(); // Ensure paused if scrolled away before loaded
+                             }
+                             // Remove listener after first load
+                             video.removeEventListener('loadeddata', handleLoaded);
+                        }, { once: true }); // Use { once: true } for cleanup
+
+                        video.addEventListener('error', function handleError(e) {
+                             console.error('Error loading video:', video.getAttribute('data-src'), e);
+                             if (spinner) spinner.style.display = 'none';
+                             // Optionally display a video error message in the container
+                             const errorMsg = container.querySelector('.video-error-message') || document.createElement('div');
+                             errorMsg.className = 'video-error-message';
+                             errorMsg.textContent = 'Error loading';
+                             if (!container.contains(errorMsg)) {
+                                container.appendChild(errorMsg);
+                             }
+                             video.removeEventListener('error', handleError);
+                        }, { once: true });
+
+                        video.src = dataSrc;
+                        video.removeAttribute('data-src'); // Remove data-src after setting src
+                        video.load(); // Start loading
+                    } else if (video.readyState >= 3) { // HAVE_FUTURE_DATA or more
+                         // Video already loaded or loading, try playing
+                         const playPromise = video.play();
+                         if (playPromise !== undefined) {
+                             playPromise.catch(e => {
+                                 // console.log('Autoplay prevented on scroll into view:', video.src, e);
+                             });
+                         }
                     }
-                });
-            }, {
-                rootMargin: '100px 0px',
-                threshold: 0.1
-            });
-            
-            // Observe all video sources with data-src
-            lazyVideos.forEach(source => {
-                videoObserver.observe(source);
-            });
-        } else {
-            // Fallback for browsers without IntersectionObserver
-            lazyVideos.forEach(source => {
-                const src = source.getAttribute('data-src');
-                if (src) {
-                    console.log(`Loading video without observer: ${src}`);
-                    source.src = src;
-                    source.removeAttribute('data-src');
-                    
-                    const video = source.parentElement;
-                    
-                    // Add error handling
-                    video.addEventListener('error', function(e) {
-                        console.error(`Error loading video without observer from ${src}:`, e);
-                    }, true);
-                    
-                    source.parentElement.load();
+                } else {
+                    // Video is scrolling out of view
+                    if (!video.paused) {
+                        video.pause();
+                    }
                 }
             });
+        }, options);
+
+        // Observe all video elements initially present or added later
+        const videosToObserve = document.querySelectorAll('video[data-src]');
+        console.log(`Initializing observer for ${videosToObserve.length} videos.`);
+        videosToObserve.forEach(video => {
+            observer.observe(video);
+        });
+
+        // If new videos are added dynamically later (e.g., infinite scroll),
+        // you would need to query for them and call observer.observe(newVideo)
+    }
+    
+    // Intersection Observer for general fade-in animations (e.g., contact section, headings)
+    const fadeElements = document.querySelectorAll('.contact-content, .gallery-heading');
+    
+    const fadeOptions = {
+        root: null,
+        threshold: 0.2,
+        rootMargin: '0px'
+    };
+    
+    const fadeObserver = new IntersectionObserver(function(entries, observer) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, fadeOptions);
+    
+    fadeElements.forEach(el => {
+        el.classList.add('fade-in');
+        fadeObserver.observe(el);
+    });
+    
+    // NEW: Intersection Observer specifically for video item fade-in/visibility
+    function initVideoItemObserver() {
+        const videoItemsToObserve = document.querySelectorAll('.video-item');
+        if (!('IntersectionObserver' in window) || videoItemsToObserve.length === 0) {
+            // Fallback or simply make all items visible immediately if no observer
+            videoItemsToObserve.forEach(item => item.classList.add('visible'));
+            return;
         }
+
+        const itemObserverOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1 // Trigger when 10% visible
+        };
+
+        const itemObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Optional: Unobserve after it becomes visible if you don't need it to fade out
+                    // observer.unobserve(entry.target);
+                } else {
+                     // Optional: Remove 'visible' class if you want items to fade out when scrolled out
+                     // entry.target.classList.remove('visible');
+                }
+            });
+        }, itemObserverOptions);
+
+        console.log(`Initializing visibility observer for ${videoItemsToObserve.length} video items.`);
+        videoItemsToObserve.forEach(item => {
+            itemObserver.observe(item);
+        });
+    }
+    
+    // Simplified wave emoji animation (removed shimmer effect)
+    const waveEmoji = document.querySelector('.wave-emoji');
+    if (waveEmoji) {
+        // Initial animation
+        waveEmoji.classList.add('waving');
+        
+        // Periodic wave animation
+        setInterval(() => {
+            waveEmoji.classList.add('waving');
+            
+            setTimeout(() => {
+                waveEmoji.classList.remove('waving');
+            }, 1000);
+        }, 3000);
+    }
+    
+    // Dynamic positioning for scroll arrow
+    const scrollArrow = document.querySelector('.scroll-arrow');
+    const introContent = document.querySelector('.intro-content');
+    const introSection = document.querySelector('.intro-section');
+    
+    function positionScrollArrow() {
+        if (scrollArrow && introSection) {
+            // Just ensure the arrow is visible, CSS will handle the positioning
+            scrollArrow.style.opacity = "1";
+            scrollArrow.style.visibility = "visible";
+        }
+    }
+    
+    // Position on load and window resize
+    positionScrollArrow();
+    window.addEventListener('resize', positionScrollArrow);
+    
+    // Show arrow after intro animations are complete
+    setTimeout(() => {
+        if (scrollArrow) {
+            scrollArrow.style.opacity = "1";
+            scrollArrow.style.visibility = "visible";
+        }
+    }, 1500);
+    
+    // Scroll arrow functionality
+    if (scrollArrow) {
+        scrollArrow.addEventListener('click', () => {
+            const workSection = document.getElementById('work');
+            if (workSection) {
+                window.scrollTo({
+                    top: workSection.offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    }
+
+    // Add video centering on click/tap
+    const platformContent = document.querySelector('.platform-content');
+    if (platformContent) {
+        platformContent.addEventListener('click', function(event) {
+            // Find the closest parent video item
+            const clickedItem = event.target.closest('.video-item');
+
+            if (clickedItem) {
+                // Calculate the position to scroll to
+                const itemRect = clickedItem.getBoundingClientRect();
+                const itemTop = itemRect.top + window.scrollY;
+                const itemHeight = clickedItem.offsetHeight;
+                const viewportHeight = window.innerHeight;
+                
+                // Calculate the scroll position to center the item
+                // Subtract half the viewport height, add back half the item height
+                const targetScrollY = itemTop - (viewportHeight / 2) + (itemHeight / 2);
+                
+                // Smoothly scroll to the calculated position
+                window.scrollTo({
+                    top: targetScrollY,
+                    behavior: 'smooth'
+                });
+                
+                // Optional: Prevent any default click behavior if necessary
+                // event.preventDefault(); 
+            }
+        });
     }
 });
 

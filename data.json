@@ -1,6 +1,6 @@
 {
   "profile": {
-    "name": "Owais Iqbal",
+    "name": "Owais",
     "title": "Creative Developer",
     "location": "Sharjah, UAE",
     "image": "https://cdn.itsowaisiqbal.me/images/owais_profile.png",
@@ -24,73 +24,73 @@
         {
           "title": "Snickers NFL",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/lens-studio/snickers.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Atomic", "Snickers"]
         },
         {
           "title": "ASOS",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/lens-studio/asos.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Atomic", "ASOS"]
         },
         {
           "title": "Etisalat Portal",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/lens-studio/etisalat.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Atomic", "Etisalat"]
         },
         {
           "title": "Dancing with the Snap Stars",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/lens-studio/dancing-with-snap-stars.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Atomic", "Snapchat"]
         },
         {
           "title": "Snap Cafe",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/lens-studio/snap-cafe.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Atomic", "Snapchat"]
         },
         {
           "title": "Saudi National Day Pride 2024",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/lens-studio/saudi-national-day-pride.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Atomic", "Snapchat"]
         },
         {
           "title": "Mobily Xstreme",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/lens-studio/mobily.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Atomic", "Mobily"]
         },
         {
           "title": "Orange Runner",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/lens-studio/orange.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Atomic", "Orange"]
         },
         {
           "title": "ToYou Runner",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/lens-studio/toyou.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Atomic", "ToYou"]
         },
         {
           "title": "Samsung AGT",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/lens-studio/samsung-agt.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Atomic", "Samsung"]
         },
         {
           "title": "EAFC TOTY 2025",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/lens-studio/toty.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["itsowaisiqbal"]
         },
         {
           "title": "TARS Interstellar",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/lens-studio/tars.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["itsowaisiqbal"]
         }
       ]
@@ -108,97 +108,97 @@
         {
           "title": "Dubizzle Song Challenge",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/effect-house/eh_dubizzle.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Atomic", "Dubizzle"]
         },
         {
           "title": "Nivea",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/effect-house/eh_nivea.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Atomic", "Nivea"]
         },
         {
           "title": "OMO Speedpods",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/effect-house/eh_omo.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Atomic", "OMO"]
         },
         {
           "title": "7up",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/effect-house/eh_7up.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Socialize", "7up"]
         },
         {
           "title": "Pepsi",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/effect-house/eh_pepsi.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Socialize", "Pepsi"]
         },
         {
           "title": "Cheetos",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/effect-house/eh_cheetos.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Socialize", "Cheetos"]
         },
         {
           "title": "Taqa",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/effect-house/eh_taqa.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Socialize", "Taqa"]
         },
         {
           "title": "Lays",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/effect-house/eh_lays.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Socialize", "Lays"]
         },
         {
           "title": "Mall of the Emirates",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/effect-house/eh_moe.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Socialize", "Mall of the Emirates"]
         },
         {
           "title": "Olips",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/effect-house/eh_olips.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Socialize", "Olips"]
         },
         {
           "title": "Sirma",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/effect-house/eh_sirma.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Socialize", "Sirma"]
         },
         {
           "title": "Roco",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/effect-house/eh_roco.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Socialize", "Roco"]
         },
         {
           "title": "Ruffles",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/effect-house/eh_ruffles.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Socialize", "Ruffles"]
         },
         {
           "title": "Solo",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/effect-house/eh_solo.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Socialize", "Solo"]
         },
         {
           "title": "Ulker",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/effect-house/eh_ulker.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Socialize", "Ulker"]
         },
         {
           "title": "Otokoc",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/effect-house/eh_otokoc.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Socialize", "Otokoc"]
         }
       ]
@@ -210,25 +210,25 @@
         {
           "title": "Diriyah Outernet",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/other/diriyah-outernet.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Atomic"]
         },
         {
           "title": "Thirsty For More",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/other/thirsty-for-more.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Traffic Digital"]
         },
         {
           "title": "Iftar Cannon",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/other/iftar-cannon.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["itsowaisiqbal"]
         },
         {
           "title": "Real Estate iPad App",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/other/real-estate.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Atomic"]
         }
       ]
