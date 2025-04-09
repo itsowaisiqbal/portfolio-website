@@ -1,0 +1,212 @@
+{
+  "profile": {
+    "name": "Owais Iqbal",
+    "title": "Creative Developer",
+    "location": "Sharjah, UAE",
+    "image": "https://itsowaisiqbal.me/images/owais_profile.png",
+    "bio": [
+      "An XR innovator with over 5 years of experience transforming creative ideas into immersive digital realities. I specialize in crafting Social AR effects and VR/MR experiences, where my core strengths in creative development and problem solving shine 🪄",
+      "Whether it's a captivating AR filter or a comprehensive VR project, I leverage my deep technical expertise and passion for innovation to push the boundaries of what's possible in XR!",
+      "Let's work together to bring your vision to life in the most engaging and impactful way possible 🚀"
+    ]
+  },
+  "sections": {
+    "lens_studio": {
+      "title": "Lens Studio Projects",
+      "description": "Creative AR experiences built with Snapchat's Lens Studio.",
+      "items": [
+        {
+          "title": "Ramadan Mall 2025",
+          "video_url": "https://itsowaisiqbal.me/videos/lens-studio/ramadan-mall.mp4",
+          "tags": ["Atomic", "Snapchat"]
+        },
+        {
+          "title": "Snickers NFL",
+          "video_url": "https://itsowaisiqbal.me/videos/lens-studio/snickers.mp4",
+          "tags": ["Atomic", "Snickers"]
+        },
+        {
+          "title": "ASOS",
+          "video_url": "https://itsowaisiqbal.me/videos/lens-studio/asos.mp4",
+          "tags": ["Atomic", "ASOS"]
+        },
+        {
+          "title": "Etisalat Portal",
+          "video_url": "https://itsowaisiqbal.me/videos/lens-studio/etisalat.mp4",
+          "tags": ["Atomic", "Etisalat"]
+        },
+        {
+          "title": "Dancing with the Snap Stars",
+          "video_url": "https://itsowaisiqbal.me/videos/lens-studio/dancing-with-snap-stars.mp4",
+          "tags": ["Atomic", "Snapchat"]
+        },
+        {
+          "title": "Snap Cafe",
+          "video_url": "https://itsowaisiqbal.me/videos/lens-studio/snap-cafe.mp4",
+          "tags": ["Atomic", "Snapchat"]
+        },
+        {
+          "title": "Saudi National Day Pride 2024",
+          "video_url": "https://itsowaisiqbal.me/videos/lens-studio/saudi-national-day-pride.mp4",
+          "tags": ["Atomic", "Snapchat"]
+        },
+        {
+          "title": "Mobily Xstreme",
+          "video_url": "https://itsowaisiqbal.me/videos/lens-studio/mobily.mp4",
+          "tags": ["Atomic", "Mobily"]
+        },
+        {
+          "title": "Orange Runner",
+          "video_url": "https://itsowaisiqbal.me/videos/lens-studio/orange.mp4",
+          "tags": ["Atomic", "Orange"]
+        },
+        {
+          "title": "ToYou Runner",
+          "video_url": "https://itsowaisiqbal.me/videos/lens-studio/toyou.mp4",
+          "tags": ["Atomic", "ToYou"]
+        },
+        {
+          "title": "Samsung AGT",
+          "video_url": "https://itsowaisiqbal.me/videos/lens-studio/samsung-agt.mp4",
+          "tags": ["Atomic", "Samsung"]
+        },
+        {
+          "title": "EAFC TOTY 2025",
+          "video_url": "https://itsowaisiqbal.me/videos/lens-studio/toty.mp4",
+          "tags": ["itsowaisiqbal"]
+        },
+        {
+          "title": "TARS Interstellar",
+          "video_url": "https://itsowaisiqbal.me/videos/lens-studio/tars.mp4",
+          "tags": ["itsowaisiqbal"]
+        }
+      ]
+    },
+    "effect_house": {
+      "title": "Effect House Projects",
+      "description": "Engaging AR effects built with TikTok's Effect House.",
+      "items": [
+        {
+          "title": "Samsung Anghami",
+          "video_url": "https://itsowaisiqbal.me/videos/effect-house/eh_samsung.mp4",
+          "tags": ["Atomic", "Samsung"]
+        },
+        {
+          "title": "Dubizzle Song Challenge",
+          "video_url": "https://itsowaisiqbal.me/videos/effect-house/eh_dubizzle.mp4",
+          "tags": ["Atomic", "Dubizzle"]
+        },
+        {
+          "title": "Nivea",
+          "video_url": "https://itsowaisiqbal.me/videos/effect-house/eh_nivea.mp4",
+          "tags": ["Atomic", "Nivea"]
+        },
+        {
+          "title": "OMO Speedpods",
+          "video_url": "https://itsowaisiqbal.me/videos/effect-house/eh_omo.mp4",
+          "tags": ["Atomic", "OMO"]
+        },
+        {
+          "title": "7up",
+          "video_url": "https://itsowaisiqbal.me/videos/effect-house/eh_7up.mp4",
+          "tags": ["Socialize", "7up"]
+        },
+        {
+          "title": "Pepsi",
+          "video_url": "https://itsowaisiqbal.me/videos/effect-house/eh_pepsi.mp4",
+          "tags": ["Socialize", "Pepsi"]
+        },
+        {
+          "title": "Cheetos",
+          "video_url": "https://itsowaisiqbal.me/videos/effect-house/eh_cheetos.mp4",
+          "tags": ["Socialize", "Cheetos"]
+        },
+        {
+          "title": "Taqa",
+          "video_url": "https://itsowaisiqbal.me/videos/effect-house/eh_taqa.mp4",
+          "tags": ["Socialize", "Taqa"]
+        },
+        {
+          "title": "Lays",
+          "video_url": "https://itsowaisiqbal.me/videos/effect-house/eh_lays.mp4",
+          "tags": ["Socialize", "Lays"]
+        },
+        {
+          "title": "Mall of the Emirates",
+          "video_url": "https://itsowaisiqbal.me/videos/effect-house/eh_moe.mp4",
+          "tags": ["Socialize", "Mall of the Emirates"]
+        },
+        {
+          "title": "Olips",
+          "video_url": "https://itsowaisiqbal.me/videos/effect-house/eh_olips.mp4",
+          "tags": ["Socialize", "Olips"]
+        },
+        {
+          "title": "Sirma",
+          "video_url": "https://itsowaisiqbal.me/videos/effect-house/eh_sirma.mp4",
+          "tags": ["Socialize", "Sirma"]
+        },
+        {
+          "title": "Roco",
+          "video_url": "https://itsowaisiqbal.me/videos/effect-house/eh_roco.mp4",
+          "tags": ["Socialize", "Roco"]
+        },
+        {
+          "title": "Ruffles",
+          "video_url": "https://itsowaisiqbal.me/videos/effect-house/eh_ruffles.mp4",
+          "tags": ["Socialize", "Ruffles"]
+        },
+        {
+          "title": "Solo",
+          "video_url": "https://itsowaisiqbal.me/videos/effect-house/eh_solo.mp4",
+          "tags": ["Socialize", "Solo"]
+        },
+        {
+          "title": "Ulker",
+          "video_url": "https://itsowaisiqbal.me/videos/effect-house/eh_ulker.mp4",
+          "tags": ["Socialize", "Ulker"]
+        },
+        {
+          "title": "Otokoc",
+          "video_url": "https://itsowaisiqbal.me/videos/effect-house/eh_otokoc.mp4",
+          "tags": ["Socialize", "Otokoc"]
+        }
+      ]
+    },
+    "other": {
+      "title": "Other Projects",
+      "description": "Additional creative work spanning various platforms and technologies.",
+      "items": [
+        {
+          "title": "Diriyah Outernet",
+          "video_url": "https://itsowaisiqbal.me/videos/other/diriyah-outernet.mp4",
+          "tags": ["Atomic"]
+        },
+        {
+          "title": "Thirsty For More",
+          "video_url": "https://itsowaisiqbal.me/videos/other/thirsty-for-more.mp4",
+          "tags": ["Traffic Digital"]
+        },
+        {
+          "title": "Iftar Cannon",
+          "video_url": "https://itsowaisiqbal.me/videos/other/iftar-cannon.mp4",
+          "tags": ["itsowaisiqbal"]
+        },
+        {
+          "title": "Real Estate iPad App",
+          "video_url": "https://itsowaisiqbal.me/videos/other/real-estate.mp4",
+          "tags": ["Atomic"]
+        }
+      ]
+    }
+  },
+  "contact": {
+    "email": "itsowaisiqbal@outlook.com",
+    "social": {
+      "linkedin": "https://www.linkedin.com/in/itsowaisiqbal/",
+      "instagram": "https://www.instagram.com/itsowaisiqbal/",
+      "snapchat": "https://www.snapchat.com/add/itsowaisiqbal",
+      "tiktok": "https://www.tiktok.com/@itsowaisiqbal"
+    }
+  }
+} 

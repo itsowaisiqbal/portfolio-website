@@ -478,6 +478,225 @@ document.addEventListener('DOMContentLoaded', function() {
             ease: 'power2.out'
         });
     }
+    
+    // Load portfolio data from JSON file
+    fetch('data.json')
+        .then(response => response.json())
+        .then(data => {
+            // Populate profile information
+            populateProfile(data.profile);
+            
+            // Populate project sections
+            populateProjects(data.sections);
+            
+            // Populate contact information
+            populateContact(data.contact);
+        })
+        .catch(error => {
+            console.error('Error loading portfolio data:', error);
+        });
+    
+    // Function to populate profile information
+    function populateProfile(profile) {
+        // Update name
+        document.querySelector('.intro-greeting h1').textContent = `Hi! I'm ${profile.name}`;
+        
+        // Update job title
+        document.querySelector('.job-title').textContent = profile.title;
+        
+        // Update location
+        document.querySelector('.location').innerHTML = `<span class="location-icon">📍</span> ${profile.location} <span class="flag">🇦🇪</span>`;
+        
+        // Update profile image
+        document.querySelector('.intro-image img').src = profile.image;
+        
+        // Update bio paragraphs
+        const bioContainer = document.querySelector('.intro-bio');
+        bioContainer.innerHTML = '';
+        profile.bio.forEach(paragraph => {
+            const p = document.createElement('p');
+            p.textContent = paragraph;
+            bioContainer.appendChild(p);
+        });
+    }
+    
+    // Function to populate project sections
+    function populateProjects(sections) {
+        // Set up tab click handlers if not already done in existing code
+        const tabs = document.querySelectorAll('.platform-tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const platform = this.getAttribute('data-platform');
+                
+                // Update active tab
+                document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show corresponding panel
+                document.querySelectorAll('.platform-panel').forEach(p => p.classList.remove('active'));
+                document.getElementById(`${platform}-panel`).classList.add('active');
+            });
+        });
+        
+        // Populate Lens Studio section
+        populateSection('snapchat', sections.lens_studio);
+        
+        // Populate Effect House section
+        populateSection('tiktok', sections.effect_house);
+        
+        // Populate Other section
+        populateSection('other', sections.other);
+    }
+    
+    // Function to populate a specific project section
+    function populateSection(platformId, sectionData) {
+        const panel = document.getElementById(`${platformId}-panel`);
+        if (!panel) return;
+        
+        // Update section title and description
+        const infoElement = panel.querySelector('.platform-info');
+        if (infoElement) {
+            infoElement.querySelector('h3').textContent = sectionData.title;
+            infoElement.querySelector('p').textContent = sectionData.description;
+        }
+        
+        // Update video grid
+        const videoGrid = panel.querySelector('.video-grid');
+        if (!videoGrid) return;
+        
+        videoGrid.innerHTML = '';
+        
+        // Add each video item
+        sectionData.items.forEach(item => {
+            // Log the video URL to help with debugging
+            console.log(`Creating video element for: ${item.video_url}`);
+            
+            const videoItemHtml = `
+                <div class="video-item ar">
+                    <div class="video-container portrait">
+                        <video autoplay muted loop playsinline loading="lazy">
+                            <source src="${item.video_url}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <div class="video-info">
+                        <h3>${item.title}</h3>
+                        <div class="tags">
+                            ${item.tags.map(tag => `<span>${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            videoGrid.innerHTML += videoItemHtml;
+        });
+        
+        // Initialize videos directly
+        setupVideoAutoplay();
+    }
+    
+    // Function to populate contact information
+    function populateContact(contact) {
+        // Update email
+        const emailLink = document.querySelector('.contact-info a');
+        if (emailLink) {
+            emailLink.href = `mailto:${contact.email}`;
+            emailLink.textContent = contact.email;
+        }
+        
+        // Update social links
+        if (contact.social) {
+            const socialLinks = document.querySelector('.social-links');
+            if (socialLinks) {
+                const linkedinLink = socialLinks.querySelector('.linkedin');
+                if (linkedinLink) linkedinLink.href = contact.social.linkedin;
+                
+                const instagramLink = socialLinks.querySelector('.instagram');
+                if (instagramLink) instagramLink.href = contact.social.instagram;
+                
+                const snapchatLink = socialLinks.querySelector('.snapchat');
+                if (snapchatLink) snapchatLink.href = contact.social.snapchat;
+                
+                const tiktokLink = socialLinks.querySelector('.tiktok');
+                if (tiktokLink) tiktokLink.href = contact.social.tiktok;
+            }
+        }
+    }
+    
+    // Function to initialize lazy loading for videos
+    function initLazyLoading() {
+        // Get all video elements with data-src attribute
+        const lazyVideos = document.querySelectorAll('video source[data-src]');
+        console.log(`Found ${lazyVideos.length} lazy videos to load`);
+        
+        if ('IntersectionObserver' in window) {
+            const videoObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const source = entry.target;
+                        const src = source.getAttribute('data-src');
+                        
+                        if (src) {
+                            console.log(`Attempting to load video: ${src}`);
+                            source.src = src;
+                            source.removeAttribute('data-src');
+                            
+                            // Get the parent video element
+                            const video = source.parentElement;
+                            
+                            // Add error handling for loading failures
+                            video.addEventListener('error', function(e) {
+                                console.error(`Error loading video from ${src}:`, e);
+                            }, true); // Capture the event
+                            
+                            // Load the video
+                            video.load();
+                            
+                            // Set video to loop and muted
+                            video.loop = true;
+                            video.muted = true;
+                            video.setAttribute('playsinline', '');
+                            
+                            // Try to autoplay
+                            video.play().catch(e => {
+                                console.log('Lazy load autoplay prevented:', e);
+                            });
+                        }
+                        
+                        // Stop observing after loading
+                        videoObserver.unobserve(source);
+                    }
+                });
+            }, {
+                rootMargin: '100px 0px',
+                threshold: 0.1
+            });
+            
+            // Observe all video sources with data-src
+            lazyVideos.forEach(source => {
+                videoObserver.observe(source);
+            });
+        } else {
+            // Fallback for browsers without IntersectionObserver
+            lazyVideos.forEach(source => {
+                const src = source.getAttribute('data-src');
+                if (src) {
+                    console.log(`Loading video without observer: ${src}`);
+                    source.src = src;
+                    source.removeAttribute('data-src');
+                    
+                    const video = source.parentElement;
+                    
+                    // Add error handling
+                    video.addEventListener('error', function(e) {
+                        console.error(`Error loading video without observer from ${src}:`, e);
+                    }, true);
+                    
+                    source.parentElement.load();
+                }
+            });
+        }
+    }
 });
 
 // Three.js background animation
