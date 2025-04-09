@@ -191,21 +191,31 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set autoplay for all videos
     function setupVideoAutoplay() {
         const videos = document.querySelectorAll('video');
+        console.log(`Setting up autoplay for ${videos.length} videos`);
         
-        videos.forEach(video => {
+        videos.forEach((video, index) => {
             // Set attributes for autoplay
             video.autoplay = true;
             video.muted = true; // Must be muted for autoplay to work in most browsers
             video.setAttribute('playsinline', ''); // For iOS
+            video.setAttribute('loop', ''); // Ensure videos loop
+            
+            console.log(`Initializing video ${index + 1}/${videos.length}`);
             
             // Load the video
             video.load();
             
             // Try to play when it's loaded
             video.addEventListener('loadedmetadata', function() {
+                console.log(`Video ${index + 1} metadata loaded, attempting to play`);
                 video.play().catch(e => {
-                    console.log('Autoplay prevented:', e);
+                    console.log(`Autoplay prevented for video ${index + 1}:`, e);
                 });
+            });
+            
+            // Add error handler
+            video.addEventListener('error', function(e) {
+                console.error(`Error with video ${index + 1}:`, e);
             });
         });
     }
@@ -570,6 +580,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sectionData.items.forEach(item => {
             // Skip disabled items
             if (item.disabled) {
+                console.log(`Skipping disabled video: ${item.title}`);
                 return;
             }
             
@@ -596,8 +607,10 @@ document.addEventListener('DOMContentLoaded', function() {
             videoGrid.innerHTML += videoItemHtml;
         });
         
-        // Initialize videos directly
-        setupVideoAutoplay();
+        // Initialize videos directly with a slight delay to ensure DOM is updated
+        setTimeout(() => {
+            setupVideoAutoplay();
+        }, 100);
     }
     
     // Function to populate contact information

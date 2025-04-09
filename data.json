@@ -102,7 +102,7 @@
         {
           "title": "Samsung Anghami",
           "video_url": "https://cdn.itsowaisiqbal.me/videos/effect-house/eh_samsung.mp4",
-          "disabled": true,
+          "disabled": false,
           "tags": ["Atomic", "Samsung"]
         },
         {
