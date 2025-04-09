@@ -3,65 +3,64 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize Three.js background
     initThreeBackground();
     
-    // Add futuristic cursor effect
-    const body = document.body;
-    const cursorDot = document.createElement('div');
-    cursorDot.className = 'cursor-dot';
-    const cursorOutline = document.createElement('div');
-    cursorOutline.className = 'cursor-outline';
+    // Check if on mobile device
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
     
-    body.appendChild(cursorDot);
-    body.appendChild(cursorOutline);
-    
-    let mouseX = 0;
-    let mouseY = 0;
-    let dotX = 0;
-    let dotY = 0;
-    let outlineX = 0;
-    let outlineY = 0;
-    
-    body.addEventListener('mousemove', function(e) {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
-    
-    function animate() {
-        // Smooth follow for cursor dot
-        dotX += (mouseX - dotX) * 0.2;
-        dotY += (mouseY - dotY) * 0.2;
+    // Add futuristic cursor effect only on non-mobile devices
+    if (!isMobileDevice) {
+        const body = document.body;
+        const cursorDot = document.createElement('div');
+        cursorDot.className = 'cursor-dot';
+        const cursorOutline = document.createElement('div');
+        cursorOutline.className = 'cursor-outline';
         
-        // More delayed follow for outline
-        outlineX += (mouseX - outlineX) * 0.1;
-        outlineY += (mouseY - outlineY) * 0.1;
+        body.appendChild(cursorDot);
+        body.appendChild(cursorOutline);
         
-        cursorDot.style.transform = `translate(${dotX}px, ${dotY}px)`;
-        cursorOutline.style.transform = `translate(${outlineX}px, ${outlineY}px)`;
+        let mouseX = 0;
+        let mouseY = 0;
+        let dotX = 0;
+        let dotY = 0;
+        let outlineX = 0;
+        let outlineY = 0;
         
-        requestAnimationFrame(animate);
-    }
-    
-    // Only enable custom cursor on non-touch devices
-    if (!('ontouchstart' in window)) {
+        body.addEventListener('mousemove', function(e) {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        function animate() {
+            // Smooth follow for cursor dot
+            dotX += (mouseX - dotX) * 0.2;
+            dotY += (mouseY - dotY) * 0.2;
+            
+            // More delayed follow for outline
+            outlineX += (mouseX - outlineX) * 0.1;
+            outlineY += (mouseY - outlineY) * 0.1;
+            
+            cursorDot.style.transform = `translate(${dotX}px, ${dotY}px)`;
+            cursorOutline.style.transform = `translate(${outlineX}px, ${outlineY}px)`;
+            
+            requestAnimationFrame(animate);
+        }
+        
         animate();
-    } else {
-        cursorDot.style.display = 'none';
-        cursorOutline.style.display = 'none';
-    }
-    
-    // Add interactive elements for cursor changes
-    const interactiveElements = document.querySelectorAll('a, button, input, textarea, .video-item');
-    
-    interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            cursorDot.classList.add('cursor-active');
-            cursorOutline.classList.add('cursor-active');
-        });
         
-        el.addEventListener('mouseleave', () => {
-            cursorDot.classList.remove('cursor-active');
-            cursorOutline.classList.remove('cursor-active');
+        // Add interactive elements for cursor changes
+        const interactiveElements = document.querySelectorAll('a, button, input, textarea, .video-item');
+        
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorDot.classList.add('cursor-active');
+                cursorOutline.classList.add('cursor-active');
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                cursorDot.classList.remove('cursor-active');
+                cursorOutline.classList.remove('cursor-active');
+            });
         });
-    });
+    }
     
     // Smooth scrolling for navigation links
     const scrollLinks = document.querySelectorAll('a[href^="#"]');
@@ -396,34 +395,89 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Lazy load videos when they come into view
-    const options = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
+    // Improved lazy loading for videos
+    const lazyVideos = document.querySelectorAll('video[data-src]');
     
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const video = entry.target;
-                const source = video.querySelector('source');
-                
-                // If we have a data-src, use it
-                if (source && source.dataset.src) {
-                    source.src = source.dataset.src;
-                    video.load();
-                    // Once loaded, remove from observation
-                    observer.unobserve(video);
+    if ('IntersectionObserver' in window) {
+        const videoObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const video = entry.target;
+                    const src = video.getAttribute('data-src');
+                    
+                    if (src) {
+                        video.src = src;
+                        video.load();
+                        video.removeAttribute('data-src');
+                        
+                        // Set video to loop and muted
+                        video.loop = true;
+                        video.muted = true;
+                        video.setAttribute('playsinline', '');
+                        
+                        // Try to autoplay
+                        video.play().catch(e => {
+                            console.log('Lazy load autoplay prevented:', e);
+                        });
+                    }
+                    
+                    // Stop observing after loading
+                    videoObserver.unobserve(video);
                 }
+            });
+        }, {
+            rootMargin: '100px 0px',
+            threshold: 0.1
+        });
+        
+        // Observe all videos with data-src
+        lazyVideos.forEach(video => {
+            videoObserver.observe(video);
+        });
+    } else {
+        // Fallback for browsers without IntersectionObserver
+        lazyVideos.forEach(video => {
+            const src = video.getAttribute('data-src');
+            if (src) {
+                video.src = src;
+                video.load();
+                video.removeAttribute('data-src');
             }
         });
-    }, options);
+    }
     
-    // Observe all videos with sources that have data-src
-    document.querySelectorAll('video source[data-src]').forEach(source => {
-        observer.observe(source.parentElement);
-    });
+    // Optimize for mobile - better touch handling
+    if (isMobileDevice) {
+        // Add touch-specific handling
+        const videoItems = document.querySelectorAll('.video-item');
+        videoItems.forEach(item => {
+            item.addEventListener('touchstart', function() {
+                // This empty handler enables CSS :active states on iOS
+            }, {passive: true});
+        });
+        
+        // Prevent page zooming on double tap for iOS Safari
+        document.addEventListener('touchend', function(event) {
+            const now = Date.now();
+            const DOUBLE_TAP_THRESHOLD = 300;
+            if (now - lastTouchEnd <= DOUBLE_TAP_THRESHOLD) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, {passive: false});
+        
+        // Set a variable to track the last touch end time
+        let lastTouchEnd = 0;
+    }
+    
+    // Optimize performance by reducing animations on mobile
+    if (isMobileDevice) {
+        // Simplify GSAP animations for better performance
+        gsap.defaults({
+            duration: 0.7,
+            ease: 'power2.out'
+        });
+    }
 });
 
 // Three.js background animation
