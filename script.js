@@ -568,6 +568,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Add each video item
         sectionData.items.forEach(item => {
+            // Skip disabled items
+            if (item.disabled) {
+                return;
+            }
+            
             // Log the video URL to help with debugging
             console.log(`Creating video element for: ${item.video_url}`);
             
